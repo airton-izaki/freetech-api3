@@ -24,16 +24,4 @@ app.use('/api/auth', authRoutes);
 // Variável de ambiente para URL do banco (defina no .env)
 const url = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@${process.env.MONGODB_HOST}/${process.env.MONGODB_DBNAME}`;
 
-/**
-mongoose
-  .connect(url)
-  .then(() => console.log("Conectado ao MongoDB"))
-  .catch((err) => console.log("Erro ao conectar ao MongoDB", err.message));
-*/
-//const indexRouter = require('./routes/index');
-//const usersRouter = require('./routes/users');
-//app.use(express.static(path.join(__dirname, 'public')));
-//app.use('/', indexRouter);
-//app.use('/users', usersRouter);
-
 module.exports = app;
