@@ -10,6 +10,7 @@
          bcryptjs	    Criptografia de senhas (hashing)
          jsonwebtoken	Geração e validação de tokens JWT para autenticação 
          swagger        conjunto de ferramentas para descrever, documentar e consumir APIs RESTful.
+         Joi            Garantir a integridade dos dados que entram e saem do seu sistema
     1.2. Desenvolvimento.
          nodemon	Reinicia automaticamente o servidor quando arquivos são alterados
          jest   	Framework de testes unitários
