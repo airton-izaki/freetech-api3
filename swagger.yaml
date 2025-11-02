@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: FreeTech API
+  description: API para gerenciamento de usuários e tarefas, com autenticação JWT.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+
+tags:
+  - name: Usuário
+    description: Operações relacionadas a usuários
+  - name: Autenticação
+    description: Login e geração de tokens
+  - name: Tarefa
+    description: Gerenciamento de tarefas dos usuários
+
+paths:
+  /api/usuario:
+    post:
+      summary: Cria um novo usuário
+      tags: [Usuário]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  example: João da Silva
+                email:
+                  type: string
+                  example: joao@email.com
+                senha:
+                  type: string
+                  example: 123456
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+        "400":
+          description: Erro ao criar usuário
+
+  /api/auth/login:
+    post:
+      summary: Realiza login e retorna o token JWT
+      tags: [Autenticação]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: joao@email.com
+                senha:
+                  type: string
+                  example: 123456
+      responses:
+        "200":
+          description: Login bem-sucedido
+        "401":
+          description: Credenciais inválidas
+
+  /api/auth/register:
+    post:
+      summary: Registra um novo usuário
+      tags: [Autenticação]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  example: João da Silva
+                email:
+                  type: string
+                  example: joao@email.com
+                senha:
+                  type: string
+                  example: 123456
+      responses:
+        "201":
+          description: Usuário registrado com sucesso
+        "400":
+          description: Erro ao registrar usuário
+
+  /api/tarefa:
+    get:
+      summary: Lista todas as tarefas do usuário autenticado
+      security:
+        - bearerAuth: []
+      tags: [Tarefa]
+      responses:
+        "200":
+          description: Lista de tarefas retornada com sucesso
+        "401":
+          description: Token inválido ou ausente
+
+    post:
+      summary: Cria uma nova tarefa
+      security:
+        - bearerAuth: []
+      tags: [Tarefa]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                  example: Minha primeira tarefa
+                descricao:
+                  type: string
+                  example: Descrição da tarefa
+                status:
+                  type: string
+                  example: pendente
+      responses:
+        "201":
+          description: Tarefa criada com sucesso
+        "400":
+          description: Erro ao criar tarefa
+        "401":
+          description: Token inválido ou ausente
+
+  /api/tarefa/{id}:
+    get:
+      summary: Retorna uma tarefa específica
+      security:
+        - bearerAuth: []
+      tags: [Tarefa]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tarefa encontrada
+        "404":
+          description: Tarefa não encontrada
+        "401":
+          description: Token inválido ou ausente
+
+    put:
+      summary: Atualiza uma tarefa existente
+      security:
+        - bearerAuth: []
+      tags: [Tarefa]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                titulo:
+                  type: string
+                descricao:
+                  type: string
+                status:
+                  type: string
+      responses:
+        "200":
+          description: Tarefa atualizada com sucesso
+        "400":
+          description: Erro na atualização
+        "404":
+          description: Tarefa não encontrada
+        "401":
+          description: Token inválido ou ausente
+
+    delete:
+      summary: Exclui uma tarefa pelo ID
+      security:
+        - bearerAuth: []
+      tags: [Tarefa]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Tarefa excluída com sucesso
+        "404":
+          description: Tarefa não encontrada
+        "401":
+          description: Token inválido ou ausente
+
+# 🔒 Definição do esquema de autenticação JWT
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
